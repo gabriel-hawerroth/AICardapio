@@ -1,10 +1,9 @@
-package methods;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseConnection {
+public class methods {
 
     static Connection conexao = null;
 
@@ -27,5 +26,13 @@ public class DatabaseConnection {
     public static void print(String texto) {
         System.out.println(texto);
     }
+
+    // CREATE
+
+    // UPDATE
+
+    // DELETE
+
+    // READ
 
 }
