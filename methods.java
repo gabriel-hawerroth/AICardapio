@@ -1,10 +1,10 @@
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class methods {
+public class Methods {
 
+    static String sql;
     static Connection conexao = null;
 
     public static void conectarBanco() {
@@ -29,10 +29,52 @@ public class methods {
 
     // CREATE
 
-    // UPDATE
 
-    // DELETE
+
+
+
+
+
+
+
+
+
+
+
+
 
     // READ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // UPDATE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // DELETE
 
 }
