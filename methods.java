@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -33,8 +34,28 @@ public class Methods {
         System.out.println(texto);
     }
 
-    // CREATE
+    // Método exibir menu
+    public static void exibirMenuInicial() {
+        print("");
+        print("Digite o número de uma das opções abaixo:");
+        print("1 - Criar um novo item");
+        print("2 - Visualizar um item");
+        print("3 - Visualizar o cardápio");
+        print("4 - Atualizar um item");
+        print("5 - Deletar um item");
+        ApplicationMain.opcao = sc.nextInt();
+    }
 
+    // Método
+    public static void exibirMenuContinua() {
+        print("Digite o número de uma das opções abaixo:");
+        print("1 - Continuar");
+        print("2 - Sair do programa");
+        ApplicationMain.opcaoContinua = sc.nextInt();
+    }
+
+    // CREATE
+    //Este método cria novos registros no banco de dados de itens no cardápio, dando a oportunidade do usuário visualizar, editar, e excluir algum dos registros no futuro.
     public static void create() {
         while (continua) {
             sql = "INSERT INTO itens (title, price, image, description) VALUES (?, ?, ?, ?)";
@@ -75,10 +96,24 @@ public class Methods {
         }
     }
 
-    // READ
+    // READ ONE ITEM
+    
+
+    // READ ALL ITEMS
+    public static void readAllItems() {
+        return;
+    }
 
     // UPDATE
+    public static void update() {
+        return;
+    }
 
     // DELETE
+    public static void delete() {
+        return;
+    }
 
+    public static void readOneItem() {
+    }
 }
