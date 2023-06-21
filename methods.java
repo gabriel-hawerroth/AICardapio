@@ -1,8 +1,11 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Methods {
@@ -47,6 +50,7 @@ public class Methods {
 
     // Método
     public static void exibirMenuContinua() {
+        print("");
         print("Digite o número de uma das opções abaixo:");
         print("1 - Continuar");
         print("2 - Sair do programa");
@@ -58,14 +62,19 @@ public class Methods {
     // dando a oportunidade do usuário visualizar, editar, e excluir algum dos
     // registros no futuro.
     public static void create() {
+        print("");
         while (continua) {
-            sql = "INSERT INTO itens (title, price, image, description) VALUES ('?',?,'?','?')";
+            sc.nextLine();
+            sql = "INSERT INTO itens (title, price, image, description) VALUES (?,?,?,?)";
             try {
                 print("Digite o título do produto:");
+
                 String title = sc.nextLine();
 
                 print("Digite o valor do produto:");
                 double price = sc.nextDouble();
+
+                sc.nextLine();
 
                 print("Insira a URL da imagem do produto:");
                 String image = sc.nextLine();
@@ -73,12 +82,12 @@ public class Methods {
                 print("Digite a descrição do produto:");
                 String description = sc.nextLine();
 
+                statement = conexao.prepareStatement(sql);
+
                 statement.setString(1, title);
                 statement.setDouble(2, price);
                 statement.setString(3, image);
                 statement.setString(4, description);
-
-                statement = conexao.prepareStatement(sql);
 
                 statement.executeUpdate();
 
@@ -99,54 +108,144 @@ public class Methods {
 
     // READ ONE ITEM
     public static void readOneItem() {
+        sql = "SELECT * FROM ITENS WHERE ID = ?";
+        print("");
+        while (continua) {
+            sc.nextLine();
+            try {
+                print("Digite o ID do produto que deseja visualizar:");
+                int id = sc.nextInt();
+
+                statement = conexao.prepareStatement(sql);
+
+                statement.setInt(1, id);
+
+                ResultSet historico = statement.executeQuery();
+
+                while (historico.next()) {
+                    String title = historico.getString("TITLE");
+                    int price = historico.getInt("PRICE");
+                    String image = historico.getString("IMAGE");
+                    String description = historico.getString("DESCRIPTION");
+                    print("Título: " + title);
+                    print("Preço: " + price);
+                    print("Imagem: " + image);
+                    print("Descrição: " + description);
+                    print("");
+                }
+
+                break;
+
+            } catch (SQLException e) {
+                print("Item inexistente!");
+                e.printStackTrace();
+                continue;
+            } catch (InputMismatchException e) {
+                print("Erro ao visualizar o item: ID inválido!");
+                e.printStackTrace();
+                continue;
+            }
+        }
     }
 
     // READ ALL ITEMS
     public static void readAllItems() {
-        return;
     }
 
     // UPDATE
     public static void update() {
+        String title = "";
+        double price = 0;
+        String image = "";
+        String description = "";
+
+        List<ItensModel> itens = new ArrayList<>();
+        try {
+            sql = "SELECT * FROM ITENS";
+            statement = conexao.prepareStatement(sql);
+            ResultSet historico = statement.executeQuery();
+            while (historico.next()) {
+                title = historico.getString("title");
+                price = historico.getDouble("price");
+                image = historico.getString("image");
+                description = historico.getString("description");
+
+                ItensModel item = new ItensModel(title, price, image, description);
+                itens.add(item);
+            }
+        } catch (SQLException e) {
+            print("erro");
+        } catch (InputMismatchException e) {
+            print("Erro");
+        }
+
+        print("");
         while (continua) {
-            sql = "UPDATE itens SET title = '?', price = ?, image = '?', description = '?' WHERE id = ?";
+            sc.nextLine();
+            sql = "UPDATE itens SET title = ?, price = ?, image = ?, description = ? WHERE id = ?";
             try {
                 print("Digite o ID do produto que deseja atualizar:");
                 int id = sc.nextInt();
                 sc.nextLine(); // Consumir a quebra de linha após a leitura do ID
-    
-                print("Digite o novo título do produto:");
-                String title = sc.nextLine();
-    
-                print("Digite o novo valor do produto:");
-                double price = sc.nextDouble();
-    
-                sc.nextLine(); // Consumir a quebra de linha após a leitura do valor
-    
-                print("Insira a nova URL da imagem do produto:");
-                String image = sc.nextLine();
-    
-                print("Digite a nova descrição do produto:");
-                String description = sc.nextLine();
-    
-    
+
+                print("Deseja atualizar o título?");
+                print("1 - sim // 2 - não");
+                int i = sc.nextInt();
+                if (i == 1) {
+                    sc.nextLine();
+                    print("Digite o novo título do produto:");
+                    title = sc.nextLine();
+                } else if (i == 2) {
+                    title = itens.get(id - 1).getName();
+                }
+
+                print("Deseja atualizar o preço?");
+                print("1 - sim // 2 - não");
+                i = sc.nextInt();
+                if (i == 1) {
+                    sc.nextLine();
+                    print("Digite o novo preço do produto:");
+                    price = sc.nextDouble();
+                } else if (i == 2) {
+                    price = itens.get(id - 1).getPrice();
+                }
+
+                print("Deseja atualizar a imagem?");
+                print("1 - sim // 2 - não");
+                i = sc.nextInt();
+                if (i == 1) {
+                    sc.nextLine();
+                    print("Digite a nova URL da imagem:");
+                    image = sc.nextLine();
+                } else if (i == 2) {
+                    image = itens.get(id - 1).getImage();
+                }
+
+                print("Deseja atualizar o preço?");
+                print("1 - sim // 2 - não");
+                i = sc.nextInt();
+                if (i == 1) {
+                    sc.nextLine();
+                    print("Digite a nova descrição do produto:");
+                    description = sc.nextLine();
+                } else if (i == 2) {
+                    description = itens.get(id - 1).getDescription();
+                }
+
+                statement = conexao.prepareStatement(sql);
+
                 statement.setString(1, title);
                 statement.setDouble(2, price);
                 statement.setString(3, image);
                 statement.setString(4, description);
                 statement.setInt(5, id);
-    
-                statement = conexao.prepareStatement(sql);
-    
-                int rowsUpdated = statement.executeUpdate();
-    
-                if (rowsUpdated > 0) {
-                    print("Registro atualizado com sucesso.");
-                    continua = false;
-                } else {
-                    print("Nenhum registro foi atualizado. Verifique o ID do produto.");
-                }
-    
+
+                statement.executeUpdate();
+
+                print("Registro atualizado com sucesso!");
+
+                break;
+
             } catch (SQLException e) {
                 print("Erro no SQL. Não foi possível executar o comando.");
                 e.printStackTrace();
@@ -161,14 +260,19 @@ public class Methods {
 
     // DELETE
     public static void delete() {
+        print("");
         while (continua) {
+            sc.nextLine();
             sql = "DELETE From itens Where id = ?";
             print("Digite o ID do item que deseja excluir.");
             try {
                 int id = sc.nextInt();
+
                 statement = conexao.prepareStatement(sql);
+
                 statement.setInt(1, id);
                 statement.executeUpdate();
+
                 print("Item excluido com sucesso!");
 
             } catch (SQLException e) {

@@ -1,25 +1,24 @@
 public class ItensModel {
 
     private long id;
-    private String nome;
+    private String name;
     private double price;
     private String image;
     private String description;
 
-    public ItensModel(long id, String nome, double price, String image, String description) {
-        this.id = id;
-        this.nome = nome;
+    public ItensModel(String name, double price, String image, String description) {
+        this.name = name;
         this.price = price;
         this.image = image;
         this.description = description;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String nome) {
+        this.name = nome;
     }
 
     public long getId() {
