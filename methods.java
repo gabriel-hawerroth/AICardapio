@@ -59,7 +59,7 @@ public class Methods {
     // registros no futuro.
     public static void create() {
         while (continua) {
-            sql = "INSERT INTO itens (title, price, image, description) VALUES (?, ?, ?, ?)";
+            sql = "INSERT INTO itens (title, price, image, description) VALUES ('?',?,'?','?')";
             try {
                 print("Digite o título do produto:");
                 String title = sc.nextLine();
@@ -108,7 +108,55 @@ public class Methods {
 
     // UPDATE
     public static void update() {
-        return;
+        while (continua) {
+            sql = "UPDATE itens SET title = '?', price = ?, image = '?', description = '?' WHERE id = ?";
+            try {
+                print("Digite o ID do produto que deseja atualizar:");
+                int id = sc.nextInt();
+                sc.nextLine(); // Consumir a quebra de linha após a leitura do ID
+    
+                print("Digite o novo título do produto:");
+                String title = sc.nextLine();
+    
+                print("Digite o novo valor do produto:");
+                double price = sc.nextDouble();
+    
+                sc.nextLine(); // Consumir a quebra de linha após a leitura do valor
+    
+                print("Insira a nova URL da imagem do produto:");
+                String image = sc.nextLine();
+    
+                print("Digite a nova descrição do produto:");
+                String description = sc.nextLine();
+    
+    
+                statement.setString(1, title);
+                statement.setDouble(2, price);
+                statement.setString(3, image);
+                statement.setString(4, description);
+                statement.setInt(5, id);
+    
+                statement = conexao.prepareStatement(sql);
+    
+                int rowsUpdated = statement.executeUpdate();
+    
+                if (rowsUpdated > 0) {
+                    print("Registro atualizado com sucesso.");
+                    continua = false;
+                } else {
+                    print("Nenhum registro foi atualizado. Verifique o ID do produto.");
+                }
+    
+            } catch (SQLException e) {
+                print("Erro no SQL. Não foi possível executar o comando.");
+                e.printStackTrace();
+                continue;
+            } catch (InputMismatchException e) {
+                print("Erro de entrada. Valor do produto inválido.");
+                e.printStackTrace();
+                continue;
+            }
+        }
     }
 
     // DELETE
