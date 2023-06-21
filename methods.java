@@ -1,7 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -55,7 +54,9 @@ public class Methods {
     }
 
     // CREATE
-    //Este método cria novos registros no banco de dados de itens no cardápio, dando a oportunidade do usuário visualizar, editar, e excluir algum dos registros no futuro.
+    // Este método cria novos registros no banco de dados de itens no cardápio,
+    // dando a oportunidade do usuário visualizar, editar, e excluir algum dos
+    // registros no futuro.
     public static void create() {
         while (continua) {
             sql = "INSERT INTO itens (title, price, image, description) VALUES (?, ?, ?, ?)";
@@ -97,7 +98,8 @@ public class Methods {
     }
 
     // READ ONE ITEM
-    
+    public static void readOneItem() {
+    }
 
     // READ ALL ITEMS
     public static void readAllItems() {
@@ -111,9 +113,25 @@ public class Methods {
 
     // DELETE
     public static void delete() {
-        return;
-    }
+        while (continua) {
+            sql = "DELETE From itens Where id = ?";
+            print("Digite o ID do item que deseja excluir.");
+            try {
+                int id = sc.nextInt();
+                statement = conexao.prepareStatement(sql);
+                statement.setInt(1, id);
+                statement.executeUpdate();
+                print("Item excluido com sucesso!");
 
-    public static void readOneItem() {
+            } catch (SQLException e) {
+                print("Erro ao excluir item: ID inexistente");
+                e.printStackTrace();
+                continue;
+            } catch (InputMismatchException e) {
+                print("Erro de entrada. ID inválido.");
+                e.printStackTrace();
+                continue;
+            }
+        }
     }
 }
