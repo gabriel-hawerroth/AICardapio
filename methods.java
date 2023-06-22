@@ -150,6 +150,30 @@ public class Methods {
 
     // READ ALL ITEMS
     public static void readAllItems() {
+        sql = "SELECT * FROM ITENS";
+        try {
+            statement = conexao.prepareStatement(sql);
+            ResultSet historico = statement.executeQuery();
+            while (historico.next()) {
+
+                String title = historico.getString("title");
+                Double price = historico.getDouble("price");
+                String image = historico.getString("image");
+                String description = historico.getString("description");
+                print("Título: " + title);
+                print("Preço: " + price);
+                print("Imagem: " + image);
+                print("Descrição: " + description);
+                print("");
+            }
+
+        } catch (SQLException e) {
+            print("Item inexistente!");
+            e.printStackTrace();
+        } catch (InputMismatchException e) {
+            print("Erro de entrada. Valor do produto inválido.");
+            e.printStackTrace();
+        }
     }
 
     // UPDATE
@@ -261,29 +285,25 @@ public class Methods {
     // DELETE
     public static void delete() {
         print("");
-        while (continua) {
-            sc.nextLine();
-            sql = "DELETE From itens Where id = ?";
-            print("Digite o ID do item que deseja excluir.");
-            try {
-                int id = sc.nextInt();
+        sql = "DELETE From itens Where id = ?";
+        print("Digite o ID do item que deseja excluir.");
+        try {      
+            int id = sc.nextInt();
 
-                statement = conexao.prepareStatement(sql);
+            statement = conexao.prepareStatement(sql);
 
-                statement.setInt(1, id);
-                statement.executeUpdate();
+            statement.setInt(1, id);
+            statement.executeUpdate();
 
-                print("Item excluido com sucesso!");
+            print("Item excluido com sucesso!");
 
-            } catch (SQLException e) {
-                print("Erro ao excluir item: ID inexistente");
-                e.printStackTrace();
-                continue;
-            } catch (InputMismatchException e) {
-                print("Erro de entrada. ID inválido.");
-                e.printStackTrace();
-                continue;
-            }
+        } catch (SQLException e) {
+            print("Erro ao excluir item: ID inexistente");
+            e.printStackTrace();
+        } catch (InputMismatchException e) {
+            print("Erro de entrada. ID inválido.");
+            e.printStackTrace();
         }
+
     }
 }
