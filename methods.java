@@ -221,7 +221,7 @@ public class Methods {
                     image = itens.get(id - 1).getImage();
                 }
 
-                print("Deseja atualizar o preço?");
+                print("Deseja atualizar a descrição?");
                 print("1 - sim // 2 - não");
                 i = sc.nextInt();
                 if (i == 1) {
